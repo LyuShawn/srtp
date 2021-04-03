@@ -4,14 +4,36 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link rel="icon" href="<%= BASE_URL %>logo.png">
+    <title>光伏整列故障诊断</title>
   </head>
-  <body>
+  <body class="background">
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  <style>
+    .background{
+      background: #DF89B5;
+                /* Old browsers */
+      background: -moz-linear-gradient(-45deg, #BFD9FE 0%, #BFD9FE 100%);
+                /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #BFD9FE), color-stop(100%, #DF89B5));
+                /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(-45deg, #BFD9FE 0%, #DF89B5 100%);
+                /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(-45deg, #BFD9FE 0%, #DF89B5 100%);
+                /* Opera 11.10+ */
+      background: -ms-linear-gradient(-45deg, #BFD9FE 0%, #DF89B5 100%);
+                /* IE10+ */
+      background: linear-gradient(-45deg, #BFD9FE 0%, #DF89B5 100%);
+                /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#BFD9FE, endColorstr=#DF89B5, GradientType=1);
+                /* IE6-9 fallback on horizontal gradient */
+      
+      filter:blur(20px);
+    }
+  </style>
 </html>
