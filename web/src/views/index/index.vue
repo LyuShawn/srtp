@@ -1,7 +1,30 @@
 <template>
     <div>
+        <div style="width:500px; background:white;height:500px;display:fixed">
+        </div>
     </div>
 </template>
 <style>
+ .time {
+    font-size: 13px;
+    color: #999;
+  }
+  
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 
+  .button {
+    padding: 0;
+    min-height: auto;
+  }
+
+  .image {
+    width: 100%;
+    display: block;
+  }
 </style>
