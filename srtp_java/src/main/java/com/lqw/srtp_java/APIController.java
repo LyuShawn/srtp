@@ -9,6 +9,6 @@ public class APIController {
 
     @RequestMapping("getInfo")
     public String getInfo(){
-        return "";
+        return "123123";
     }
 }
