@@ -44,7 +44,7 @@ export default{
             });
             // 绘制图表
             myChart.setOption({
-                title: { text: "板1" },
+                title: { text: "   I-V曲线" },
                 tooltip: {},
                 legend: {
                 show:false,
@@ -63,6 +63,7 @@ export default{
                     name: "板1",
                     type: "line",
                     data: [0, 1, 2, 3, "阴影", 0],
+                    smooth: true,
                 },
                 ],
                 backgroundColor: 'rgba(255,255,255,0.8)',
