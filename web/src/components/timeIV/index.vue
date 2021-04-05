@@ -29,11 +29,18 @@
 <script>
 export default{
     name: 'detailIV',
+    props:['nodeIV'],
+    data(){
+      return{
+          timeIV:this.nodeIV
+      }
+     },
     methods:{
         closeDetail(){
             this.$emit('isClosed', false);
         },
-        initEChart(){
+        initEChart(timeIV){
+            console.log(timeIV);
             var _this=this;
                 //this.$root => app
             let myChart = this.$root.echarts.init(
@@ -47,23 +54,28 @@ export default{
                 title: { text: "   I-V曲线" },
                 tooltip: {},
                 legend: {
-                show:false,
+                    show:false,
                 },
                 xAxis: {
-                boundaryGap: false,
-                data: ["12-3", "12-4", "12-5", "12-6", "12-7", "12-8"],
+                    name:'电压',
+                    boundaryGap: false,
+                    scale:true,
+                    data: timeIV.V,
                 },
                 yAxis: {
+                name:'电流',
+                type:"value",
                 boundaryGap: false,
+                scale:true,
                 
-                data: [" ","正常","开路","短路","阴影",""],
                 },
                 series: [
                 {
                     name: "板1",
                     type: "line",
-                    data: [0, 1, 2, 3, "阴影", 0],
+                    data: timeIV.I,
                     smooth: true,
+                    
                 },
                 ],
                 backgroundColor: 'rgba(255,255,255,0.8)',
@@ -71,7 +83,7 @@ export default{
          },
     },
     mounted(){
-        this.initEChart();
+        this.initEChart(this.timeIV);
     }
 }
 </script>
