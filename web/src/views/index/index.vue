@@ -65,7 +65,7 @@ export default {
           show:false,
         },
         xAxis: {
-          boundaryGap: false,
+          boundaryGap: true,
           data: timeArr,
         },
         yAxis: {
@@ -80,8 +80,28 @@ export default {
             data: warnArr,
           },
         ],
+             dataZoom: [
+          {
+               type: 'slider',
+               show: true,
+               xAxisIndex: [0],
+               start: 1,
+               minSpan:5,
+               end: 100
+          },
+          {
+               type: 'inside',
+               xAxisIndex: [0],
+               start: 1,
+               minSpan:5,
+               end: 100
+          },
+     ],
         backgroundColor: 'rgba(255,255,255,0.8)',
       });
+    window.onresize = function () {//自适应大小
+        myChart.resize();
+      };
     },
 
     getData(){
