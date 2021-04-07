@@ -1,6 +1,6 @@
 <template>
     <div>
-      <iframe width="400" scrolling="no" height="100" frameborder="0" allowtransparency="true" src="https://i.tianqi.com?c=code&id=35&icon=1&site=34"></iframe>
+      <!-- <iframe width="400" scrolling="no" height="100" frameborder="0" allowtransparency="true" src="https://i.tianqi.com?c=code&id=35&icon=1&site=34"></iframe> -->
         <div  :style="{ width: '90%', height: '300px' }" 
           v-for="(mschine,index) in machineInfo" :key="index"
           :id="getID(index)" style="margin-bottom:30px;margin-left:80px;"></div>
@@ -66,9 +66,11 @@ export default {
       });
       // 绘制图表
       myChart.setOption({
-        title: { text: _this.machineInfo[index].machineName,
+        title: { 
+            text: _this.machineInfo[index].machineName,
             left:'center',
             top:20,
+            subtext:'当前故障类型：'+warnArr.pop(),
         },
         tooltip: {},
         legend: {
@@ -120,6 +122,12 @@ export default {
       axios.get(getString).then(response => {
           var data = response.data;
           data[1]=data[0];
+          data[2]=data[0];
+          data[3]=data[0];
+          data[4]=data[0];
+          data[5]=data[0];
+          data[6]=data[0];
+          data[7]=data[0];
           console.log(data);
           this.machineInfo=data;
           for(var i=0;i<data.length;i++){
