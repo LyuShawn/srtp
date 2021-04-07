@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div id="myChart" :style="{ width: '100%', height: '300px' }"></div>
+      <iframe width="400" scrolling="no" height="100" frameborder="0" allowtransparency="true" src="https://i.tianqi.com?c=code&id=35&icon=1&site=34"></iframe>
+        <div  :style="{ width: '90%', height: '300px' }" 
+          v-for="(mschine,index) in machineInfo" :key="index"
+          :id="getID(index)" style="margin-bottom:30px;margin-left:80px;"></div>
         <transition  name="el-fade-in"><div v-if="showIV"><timeIV @isClosed="closeDeatil" :nodeIV="timeIV" /></div></transition>
     </div>
 
@@ -23,11 +26,14 @@ export default {
     }
   },
   methods:{
+    getID(index){
+      return "chart"+index;
+    },
     closeDeatil(flag){
       this.showIV = false;
     },
     warnTransform(machineInfo){
-      var timeList=machineInfo[0].timeNodeList;
+      var timeList=machineInfo.timeNodeList;
       var warnArr=[];
       for(var i=0;i<timeList.length;i++){
         if(timeList[i].warning==0)  warnArr.push("正常");
@@ -38,28 +44,32 @@ export default {
       return warnArr;
     },
     timeTransform(machineInfo){
-      var timeList=machineInfo[0].timeNodeList;
+      var timeList=machineInfo.timeNodeList;
       var timeArr=[];
       for(var i=0;i<timeList.length;i++){
           timeArr.push(timeList[i].timeStamp);
       }
       return timeArr;
     },
-    initEChart(){
+    initEChart(index){
+      this.$nextTick(function(){
       var _this=this;
-      var timeArr=_this.timeTransform(this.machineInfo);
-      var warnArr=_this.warnTransform(this.machineInfo);
+      var timeArr=_this.timeTransform(this.machineInfo[index]);
+      var warnArr=_this.warnTransform(this.machineInfo[index]);
       let myChart = this.$root.echarts.init(
-        document.getElementById("myChart")
+        document.getElementById("chart"+index)
       );
       myChart.on('click',function(params){
         console.log(params.dataIndex);
-        _this.timeIV=_this.machineInfo[0].timeNodeList[params.dataIndex];
+        _this.timeIV=_this.machineInfo[index].timeNodeList[params.dataIndex];
         _this.showIV = true;
       });
       // 绘制图表
       myChart.setOption({
-        title: { text: "板1" },
+        title: { text: _this.machineInfo[index].machineName,
+            left:'center',
+            top:20,
+        },
         tooltip: {},
         legend: {
           show:false,
@@ -102,14 +112,19 @@ export default {
     window.onresize = function () {//自适应大小
         myChart.resize();
       };
+      });
     },
 
     getData(){
       var getString='http://101.132.35.228:8080/api/getInfo';
       axios.get(getString).then(response => {
           var data = response.data;
+          data[1]=data[0];
+          console.log(data);
           this.machineInfo=data;
-          this.initEChart();
+          for(var i=0;i<data.length;i++){
+              this.initEChart(i);
+          }
       });
     }
 
