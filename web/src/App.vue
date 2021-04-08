@@ -13,6 +13,7 @@
 
 #nav {
   padding: 30px;
+  padding-top:0px;
 }
 
 #nav a {
