@@ -164,13 +164,6 @@ export default {
       var getString='http://101.132.35.228:8080/api/getInfo';
       axios.get(getString).then(response => {
           var data = response.data;
-          data[1]=data[0];
-          data[2]=data[0];
-          data[3]=data[0];
-          data[4]=data[0];
-          data[5]=data[0];
-          data[6]=data[0];
-          data[7]=data[0];
           console.log(data);
           this.machineInfo=data;
           for(var i=0;i<data.length;i++){
