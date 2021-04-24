@@ -18,7 +18,6 @@ public class APIController {
     @RequestMapping("getInfo")
     public String getInfo() throws SQLException {
         MachineDao machineDao=new MachineDao();
-        System.out.println(machineDao.getList());
         String j = JSON.toJSONString(machineDao.getList());
         return j;
     }

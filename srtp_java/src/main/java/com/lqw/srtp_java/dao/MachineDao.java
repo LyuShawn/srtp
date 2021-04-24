@@ -14,8 +14,7 @@ public class MachineDao {
     private Map<String, Machine> machineMap=new HashMap<>();
     private List<Machine> machineList=new ArrayList<>();
 
-    public MachineDao() throws SQLException {
-        getData();
+    public MachineDao() {
     }
 
     public void getData() throws SQLException {
@@ -44,6 +43,11 @@ public class MachineDao {
         return machineMap;
     }
     public List<Machine> getList(){
+        return machineList;
+    }
+    public List<Machine> getLatestList() throws SQLException {
+        machineList.clear();
+        getData();
         return machineList;
     }
     public int findMachine(String name){
