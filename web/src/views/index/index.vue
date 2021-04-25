@@ -97,6 +97,7 @@ export default {
     initEChart(index){
       this.$nextTick(function(){
       var _this=this;
+      //console.log(this.machineInfo[index]);
       var timeArr=_this.timeTransform(this.machineInfo[index]);
       var warnArr=_this.warnTransform(this.machineInfo[index]);
       let myChart = this.$root.echarts.init(
@@ -124,6 +125,10 @@ export default {
         xAxis: {
           boundaryGap: true,
           data: timeArr,
+          axisLabel:{
+            showMaxLabel: true
+          },
+
         },
         yAxis: {
           boundaryGap: false,
@@ -163,16 +168,38 @@ export default {
     },
 
     getData(){
-      var getString='http://127.0.0.1:8080/api/getInfo';
-      axios.get(getString).then(response => {
-          var data = response.data;
-          this.machineInfo=data;
-          for(var i=0;i<data.length;i++){
-              this.initEChart(i);
-          }
-      });
+        var _this=this;
+        if(typeof(WebSocket)=="undefined"){
+          var getString='http://101.132.35.228:8080/api/getInfo';
+          axios.get(getString).then(response => {
+              var data = response.data;
+              this.machineInfo=data;
+              for(var i=0;i<data.length;i++){
+                  _this.initEChart(i);
+              }
+          });
+          console.log("您的浏览器不支持WebSocket");
+        }else{
+            console.log("您的浏览器支持WebScoket");
+            var socket=new WebSocket("ws://101.132.35.228:8080/websocket/machine_info");
+            socket.onopen=function(){
+                console.log("Socket已打开");
+                socket.send("这是来自客户端的消息"+location.href+new Date());
+                socket.onmessage=function(msg){
+                    _this.machineInfo=JSON.parse(msg.data);
+                    for(var i=0;i<_this.machineInfo.length;i++){
+                       _this.initEChart(i);
+                   }
+                };
+                socket.onclose=function(){
+                    console.log("Socket已关闭");
+                };
+                socket.onerror=function(){
+                    alert("Socket发生了错误");
+                };
+            }
+        }
     }
-
   },
   created(){
     this.getData();

@@ -2,15 +2,15 @@ package com.lqw.srtp_java.Util;
 
 import java.sql.*;
 
+
 public class DbUtil {
+    private static String driver="com.mysql.cj.jdbc.Driver";
+    private static String url="jdbc:MySQL://127.0.0.1:3306/srtp";
+    //private static String url="jdbc:MySQL://101.132.35.228:3306/srtp";
+    private static String user="srtp";
+    private static String pwd="123456";
     public static Connection getConnection(){
         Connection conn = null;
-
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:MySQL://101.132.35.228:3306/srtp";    //数据库
-        String user = "srtp";
-        String pwd = "123456";
-
         try {
             Class.forName(driver);
             conn = DriverManager.getConnection(url,user,pwd);
