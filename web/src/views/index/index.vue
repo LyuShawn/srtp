@@ -115,7 +115,9 @@ export default {
             top:20,
             subtext:'当前故障类型：'+warnArr.pop(),
         },
-        tooltip: {},
+        tooltip: {
+          trigger: 'axis'
+        },
         legend: {
           show:false,
         },

@@ -53,7 +53,9 @@ export default{
             // 绘制图表
             myChart.setOption({
                 title: { text: "   I-V曲线" },
-                tooltip: {},
+                tooltip: {
+                    trigger: 'axis'
+                },
                 legend: {
                     show:false,
                 },
@@ -105,10 +107,11 @@ export default{
     mounted(){
         var getString='http://127.0.0.1:8080/api/getIV?id='+this.nodeID;
         axios.get(getString).then(response => {
-            var data = response.data;
-            console.log(response);
+            var timeIV = response.data;
+            console.log(timeIV);
+            this.initEChart(timeIV);
         });
-        //this.initEChart(this.timeIV);
+        
     }
 }
 </script>
