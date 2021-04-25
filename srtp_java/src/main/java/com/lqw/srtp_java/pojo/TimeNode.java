@@ -9,13 +9,15 @@ public class TimeNode {
     public List<Double> V=new ArrayList<>();
     public int warning;
 
-    public TimeNode(String timeStamp,String IList,String VList,int warning){
-        this.timeStamp=timeStamp;
-        this.warning=warning;
-        IVTransform(IList,0);
-        IVTransform(VList,1);
+
+    public void SetI(String I){
+        IVTransform(I,0);
     }
-    public void IVTransform(String list,int d){         //0表示I,1表示V
+    public void SetV(String V){
+        IVTransform(V,1);
+    }
+
+    private void IVTransform(String list,int d){         //0表示I,1表示V
         String[] arr=list.split("_");
         for (String s : arr) {
             if(d==0){

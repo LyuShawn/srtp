@@ -27,12 +27,13 @@
 }
 </style>
 <script>
+import axios from 'axios'
 export default{
     name: 'detailIV',
     props:['nodeIV'],
     data(){
       return{
-          timeIV:this.nodeIV
+          nodeID:this.nodeIV
       }
      },
     methods:{
@@ -102,7 +103,12 @@ export default{
          },
     },
     mounted(){
-        this.initEChart(this.timeIV);
+        var getString='http://127.0.0.1:8080/api/getIV?id='+this.nodeID;
+        axios.get(getString).then(response => {
+            var data = response.data;
+            console.log(response);
+        });
+        //this.initEChart(this.timeIV);
     }
 }
 </script>

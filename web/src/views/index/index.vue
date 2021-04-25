@@ -6,7 +6,7 @@
       <div  :style="{ width: '90%', height: '300px' }" 
           v-for="(mschine,index) in machineInfo" :key="index"
           :id="getID(index)" style="margin-top:30px;margin-left:80px;"></div>
-        <transition  name="el-fade-in"><div v-if="showIV"><timeIV @isClosed="closeDeatil" :nodeIV="timeIV" /></div></transition>
+        <transition  name="el-fade-in"><div v-if="showIV"><timeIV @isClosed="closeDeatil" :nodeIV="nodeID" /></div></transition>
     </div>
 
 </template>
@@ -37,7 +37,7 @@ export default {
     return{
       showIV: false,
       machineInfo:null,
-      timeIV:null,
+      nodeID:null,
       nowDate:"",
       isShadow:'',
     }
@@ -76,18 +76,18 @@ export default {
       this.showIV = false;
     },
     warnTransform(machineInfo){
-      var timeList=machineInfo.timeNodeList;
+      var timeList=machineInfo.timeList;
       var warnArr=[];
       for(var i=0;i<timeList.length;i++){
-        if(timeList[i].warning==0)  warnArr.push("正常");
-        if(timeList[i].warning==1)  warnArr.push("开路");
-        if(timeList[i].warning==2)  warnArr.push("短路");
-        if(timeList[i].warning==3)  warnArr.push("阴影");
+        if(timeList[i].warn==0)  warnArr.push("正常");
+        if(timeList[i].warn==1)  warnArr.push("开路");
+        if(timeList[i].warn==2)  warnArr.push("短路");
+        if(timeList[i].warn==3)  warnArr.push("阴影");
       }
       return warnArr;
     },
     timeTransform(machineInfo){
-      var timeList=machineInfo.timeNodeList;
+      var timeList=machineInfo.timeList;
       var timeArr=[];
       for(var i=0;i<timeList.length;i++){
           timeArr.push(timeList[i].timeStamp);
@@ -103,8 +103,8 @@ export default {
         document.getElementById("chart"+index)
       );
       myChart.on('click',function(params){
-        console.log(params.dataIndex);
-        _this.timeIV=_this.machineInfo[index].timeNodeList[params.dataIndex];
+        _this.nodeID=_this.machineInfo[index].timeList[params.dataIndex].id;
+        console.log(_this.nodeID);
         _this.showIV = true;
       });
       // 绘制图表
@@ -161,10 +161,9 @@ export default {
     },
 
     getData(){
-      var getString='http://101.132.35.228:8080/api/getInfo';
+      var getString='http://127.0.0.1:8080/api/getInfo';
       axios.get(getString).then(response => {
           var data = response.data;
-          console.log(data);
           this.machineInfo=data;
           for(var i=0;i<data.length;i++){
               this.initEChart(i);

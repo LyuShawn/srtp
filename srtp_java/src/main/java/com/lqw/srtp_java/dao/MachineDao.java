@@ -3,6 +3,7 @@ package com.lqw.srtp_java.dao;
 import com.lqw.srtp_java.Util.DbUtil;
 import com.lqw.srtp_java.pojo.Machine;
 
+import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,23 +19,23 @@ public class MachineDao {
     }
 
     public void getData() throws SQLException {
-        String sql="select * from machine_info";
+        String sql="select id,machine_model,time,warning from machine_info";
         ResultSet rs= DbUtil.executeQuery(sql);
         while(rs.next()){
+
+            int timeID=rs.getInt("id");
             String machineName=rs.getString("machine_model");
-            String I=rs.getString("current");
-            String V=rs.getString("voltage");
             String time=rs.getString("time");
             int warn=rs.getInt("warning");
             if(!isAdd(machineName)){
                 Machine machine=new Machine(machineName);
-                machine.addTimeNode(I,V,time,warn);
+                machine.addTime(timeID,time,warn);
                 machineList.add(machine);
                 //machineMap.put(machineName,machine);
             }
             else {
                 int index=findMachine(machineName);
-                machineList.get(index).addTimeNode(I,V,time,warn);
+                machineList.get(index).addTime(timeID,time,warn);
                 //machineMap.get(machineName).addTimeNode(I,V,time,warn);
             }
         }
