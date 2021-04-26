@@ -15,8 +15,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @ServerEndpoint("/websocket/machine_info")
 @Component
 public class WebSocketServer implements Runnable{
+    private static String info;
     private MachineDao machineDao;
-    private boolean polling=true;
+    private static boolean polling=true;
     private static boolean isRun=false;
     static Log log= LogFactory.getLog(WebSocketServer.class);
     private static int onlineCount=0;
@@ -26,13 +27,18 @@ public class WebSocketServer implements Runnable{
 
     private Thread thread=new Thread(this);
 
+
     @OnOpen
-    synchronized public void onOpen(Session session){
+    synchronized public void onOpen(Session session) throws IOException {
         this.session=session;
         webSocketSet.add(this);
         addOnlineCount();
-        thread.start();
-        log.info("发现新连接，新线程开始");
+        if(!isRun){
+            thread.start();
+            isRun=true;
+            log.info("开始新连接，线程开始");
+        }else
+            sendMessage(info);//连接开始，发送初始数据
         log.info("当前连接数:"+getOnlineCount());
     }
 
@@ -41,7 +47,7 @@ public class WebSocketServer implements Runnable{
         webSocketSet.remove(this);
         subOnlineCount();
         log.info("有一连接关闭！当前连接数:"+getOnlineCount());
-        polling=false;
+        //polling=false;
     }
 
     @OnMessage
@@ -66,7 +72,7 @@ public class WebSocketServer implements Runnable{
         this.session.getBasicRemote().sendText(message);
     }
     public static void sendInfo(String message){
-        log.info(",推送内容："+message);
+        log.info("推送内容："+message);
         for (WebSocketServer item : webSocketSet) {
             try{
                 item.sendMessage(message);
@@ -79,7 +85,7 @@ public class WebSocketServer implements Runnable{
     @Override
     public synchronized void run() {
         machineDao=new MachineDao();
-        String info = null;//开线程时正常发送
+        //String info = null;//开线程时正常发送
         try {
             info = JSON.toJSONString(machineDao.getLatestList());
         } catch (SQLException throwables) {
@@ -91,6 +97,7 @@ public class WebSocketServer implements Runnable{
             e.printStackTrace();
         }
         while(polling){
+
             String newInfo = null;
             try {
                 newInfo = JSON.toJSONString(machineDao.getLatestList());
@@ -101,10 +108,12 @@ public class WebSocketServer implements Runnable{
 
                 log.info("数据变动");
                 info=newInfo;
-                try {
-                    sendMessage(newInfo);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                for (WebSocketServer item : webSocketSet) {
+                    try {
+                        item.sendMessage(newInfo);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             try {
