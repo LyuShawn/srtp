@@ -41,7 +41,7 @@ export default{
             this.$emit('isClosed', false);
         },
         initEChart(timeIV){
-            console.log(timeIV);
+            //console.log(timeIV);
             var _this=this;
                 //this.$root => app
             let myChart = this.$root.echarts.init(
@@ -105,10 +105,10 @@ export default{
          },
     },
     mounted(){
-        var getString='http://localhost:8080/api/getIV?id='+this.nodeID;
+        var getString='https://srtp.shawnxixi.icu/api/getIV?id='+this.nodeID;
         axios.get(getString).then(response => {
             var timeIV = response.data;
-            console.log(timeIV);
+            //console.log(timeIV);
             this.initEChart(timeIV);
         });
         

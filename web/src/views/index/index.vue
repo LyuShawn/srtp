@@ -105,7 +105,7 @@ export default {
       );
       myChart.on('click',function(params){
         _this.nodeID=_this.machineInfo[index].timeList[params.dataIndex].id;
-        console.log(_this.nodeID);
+        //console.log(_this.nodeID);
         _this.showIV = true;
       });
       // 绘制图表
@@ -170,7 +170,7 @@ export default {
     getData(){
         var _this=this;
         if(typeof(WebSocket)=="undefined"){
-          var getString='http://101.132.35.228:8080/api/getInfo';
+          var getString='https://srtp.shawnxixi.icu/api/getInfo';
           axios.get(getString).then(response => {
               var data = response.data;
               this.machineInfo=data;
@@ -181,7 +181,7 @@ export default {
           console.log("您的浏览器不支持WebSocket");
         }else{
             console.log("您的浏览器支持WebScoket");
-            var socket=new WebSocket("ws://localhost:8080/websocket/machine_info");
+            var socket=new WebSocket("wss://srtp.shawnxixi.icu/wss/websocket/machine_info");
             socket.onopen=function(){
                 console.log("Socket已打开");
                 socket.send("这是来自客户端的消息"+location.href+new Date());
